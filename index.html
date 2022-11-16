@@ -190,14 +190,14 @@
                             emotions, and intensities of expressions</b></h6>
                 </div>
                 <table>
-                    <tr style="background-color:#75b90062">
+                    <tr style="background-color: rgba(255, 149, 0, 0.3)">
                         <th style="text-align: right; width: 8%;">Pose&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <td>Generated</td>
                         <td>Transferred</td>
                         <td>Generated</td>
                         <td>Generated</td>
                     </tr>
-                    <tr style="background-color:#b9530062">
+                    <tr style="background-color: rgba(56, 162, 34, 0.2)">
                         <th style="text-align: right; width: 8%;">Emotion&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <td>Neutral</td>
                         <td>Neutral</td>
@@ -223,14 +223,14 @@
                             </video>
                         </td>
                     </tr>
-                    <tr style="background-color:#75b90062">
+                    <tr style="background-color: rgba(56, 162, 34, 0.2)">
                         <th style="text-align: right; width: 8%;">Emotion&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <td>Neutral</td>
                         <td>Neutral</td>
                         <td>Sad</td>
                         <td>Fear</td>
                     </tr>
-                    <tr style="background-color:#b9530062">
+                    <tr style="background-color: rgba(255, 149, 0, 0.3)">
                         <th style="text-align: right; width: 8%;">Pose&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <td>Generated</td>
                         <td>Transferred</td>
@@ -416,26 +416,38 @@
             <div class="col-md-12">
                 <h2>Method</h2>
                 <h5 class="text-center">What makes <b style="color: #76b900;">SPACEx</b> so controllable?</h5>
-                Multi stage - blah blah
+                <b style="color: #76b900;">SPACEx</b> decomposes the task of speech to face animation into 3 stages, as
+                shown in the below image:<br>
+                1) Speech2Landmarks, 2) Landmarks2Latents, and 3) Video Synthesis. Predicting facial landmarks helps add
+                modifications such as blinking. We can also apply any desired rotation, translation, and scaling to the
+                3D facial landmarks. Instead of learning to generate a high-quality output image from facial landmarks,
+                we use a state-of-the-art pretrained <a href="https://nvlabs.github.io/face-vid2vid/"
+                    target="_blank">face-vid2vid</a>
+                generator. This generator takes in the input image and latent keypoints that specify the required output
+                pose and facial configuration. We thus train a facial landmark to latent keypoints network for the
+                second stage. face-vid2vid latent keypoints can also be modified to change the eye gaze. In the final
+                step, the pretrained generator produces \(512\times512\) pixel frames.
             </div>
         </div>
         <br><br>
 
         <img src="data/method/overview.png">
-        <br><br><br><br>
+        <br><br>
+        The videos below show the intermediate and final predictions of <b style="color: #76b900;">SPACEx</b>.
+        <br><br>
 
         <table>
             <tr class="text-center">
-                <td></td>
-                <td colspan="3" style="background-color: rgba(128, 128, 128, 0.4);">Intermediate predicted</td>
-                <td></td>
+                <td style="background-color: rgba(255, 149, 0, 0.6);">Input</td>
+                <td colspan="3" style="background-color: rgba(128, 128, 128, 0.4);">Intermediate predictions</td>
+                <td style="background-color: rgba(56, 162, 34, 0.6);">Final</td>
             </tr>
             <tr class="text-center">
-                <td>Input image</td>
-                <td style="background-color: rgba(128, 128, 128, 0.2);">normalized facial landmarks</td>
-                <td style="background-color: rgba(128, 128, 128, 0.2);">posed facial landmarks</td>
-                <td style="background-color: rgba(128, 128, 128, 0.2);">latent face-vid2vid keypoints</td>
-                <td>Animated output</td>
+                <td style="background-color: rgba(255, 149, 0, 0.2)">Single Image</td>
+                <td style="background-color: rgba(128, 128, 128, 0.2);">Normalized facial landmarks</td>
+                <td style="background-color: rgba(128, 128, 128, 0.2);">Posed facial landmarks</td>
+                <td style="background-color: rgba(128, 128, 128, 0.2);">Latent face-vid2vid keypoints</td>
+                <td style="background-color: rgba(56, 162, 34, 0.2);">Animated output</td>
             </tr>
             <tr>
                 <td>
@@ -463,12 +475,12 @@
             <div class="col-md-12">
                 <hr style="max-width: 800px;">
                 <h5 class="text-center">Emotion control</h5>
-                We use labels and FilM
+                We use labels and <a href="https://github.com/ethanjperez/film" target="_blank">FiLM</a>
             </div>
         </div>
         <br><br>
 
-        <table style="width: 80%; margin: auto;">
+        <table style="width: 70%; margin: auto;">
             <tr class="text-center">
                 <td>Input image</td>
                 <td>0.5 Happy</td>
