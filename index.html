@@ -277,16 +277,19 @@
             <div class="col-md-12">
                 <h2>Overview</h2>
                 <h5 class="text-center">What exactly is <b style="color: #76b900;">SPACEx</b> trying to solve?</h5>
-                A single image often cannot fully describe the subject due to occlusions, limited pose information,
-                <i>etc</i>. Diverse source images provide more appearance information and reduce the burden of
-                hallucination that an image generator has to perform. Multiple source images provide more complete
-                information, such as the color of the eyes, the texture of the background, <i>etc</i>. This allows
-                for
-                potentially generating an output image that is more faithful to the source setting. Consider the two
-                images shown below. Given just the first image, it is impossible to know what is behind the person.
-                But given the second image, we now know the real background.
+                Speech-driven portrait animation concerns animating a still image of a face using an arbitrary 
+                input speech signal. This has a wide range of applications, for example, it
+                can be used for driving characters in computer games, dubbing in movies, 
+                and animating avatars for virtual assistance, virtual reality, and telecommunications. 
+                This is a challenging task &#8212; it has to use the
+                provided speech to predict all the nuances in human facial
+                expressions while also guaranteeing that the animation looks
+                natural, matches what is being said in the speech sample,
+                and preserves the per-frame and video quality.
 
-                <div class="text-center" style="color: #76b900;">SPACEx allows you to </div>
+                <div class="text-center" style="color: #76b900;">
+                    <b>SPACEx allows you to animate a photo using just speech, with unprecedented controllability over outputs</b>
+                </div>
             </div>
         </div>
         </br>
@@ -296,19 +299,19 @@
             <div class="col-md-12">
                 <hr style="max-width: 800px;">
                 <h5 class="text-center">The "<i>Why don't you just use X?</i> " Question</h5>
-                Single-source-based prior works such as <a
-                    href='https://aliaksandrsiarohin.github.io/first-order-model-website/' target='_blank'>FOMM</a>,
-                <a href='https://snap-research.github.io/articulated-animation/' target='_blank'>AA-PCA</a>, and <a
-                    href='https://nvlabs.github.io/face-vid2vid/' target='_blank'>fv2v</a> rely on
-                explicit flow-based warping of the source image
-                conditional on the pose of the driving image. Due to this architectural choice, they often have to
-                be modified in ad-hoc ways to take advantage of multiple source images. One scheme is to train an
-                additional pre-processing network to select the most appropriate source image for the given driving
-                image. This would, however, not allow for the use of features from multiple source images at a time.
-                The other possibility is to warp each source image to the driving pose and then average the
-                now-aligned warped features for the generator input. But as is visible in videos below, this leads
-                to sub-optimal results due to the misalignment of warped features and
-                inconsistent predictions across views.
+                While previous methods work on frontal-facing and closely-cropped input images, they suffer
+                from degraded quality or fail for arbitrary poses and larger
+                crops. Since we predict mouth motions in the normalized
+                landmark space and then apply pose transformations, we
+                are able to handle poses from face images in the wild. In
+                addition, <b style="color: #76b900;">SPACEx</b> is also able to generate missing details
+                such as teeth, while other methods either fail or introduce
+                artifacts.Our method even adds realistic head
+                and shoulder motions when the audio has a breathing sound.
+                <b style="color: #76b900;">SPACEx</b> has smoother lip motions compared
+                to prior works, which produce exaggerated and jerky motions. 
+                No other work allows as much controllability over the output video.
+                Comparisions with prior work are shown in the videos below.
             </div>
         </div>
         </br>
@@ -386,24 +389,22 @@
                 Comparing the results from different methods, we can immediately notice a few issues:
                 <ul>
                     <li>
-                        Methods developed for a single source image, such as <a
-                            href='https://nvlabs.github.io/face-vid2vid/' target='_blank'>fv2v</a> and <a
-                            href='https://aliaksandrsiarohin.github.io/first-order-model-website/'
-                            target='_blank'>FOMM</a> are unable to exactly align features warped from different
-                        source images
+                        <a href="https://hangz-nju-cuhk.github.io/projects/PC-AVS" target='_blank'>PC-AVS</a> tightly 
+                        crops the input image and changes the input pose. The face motion is rather jerky.
                     </li>
                     <li>
-                        Furthermore, simple averaging of warped features produces artifacts in the output. This is
-                        because averaging does not distinguish between ground truth features and hallucinated
-                        features.
+                        <a href='https://people.umass.edu/~yangzhou/MakeItTalk/' target='_blank'>MakeItTalk</a> has poorer lip motion and 
+                        introduces artifacts in the output videos. 
+                        For example, in the bottom two videos, there are white patchy artifacts.
+                    </li>
+                    <li>
+                        <a href='http://cvit.iiit.ac.in/research/projects/cvit-projects/a-lip-sync-expert-is-all-you-need-for-speech-to-lip-generation-in-the-wild/'
+                        target='_blank'>Wav2Lip</a> was designed with dubbing in mind. It only moves the lips, while the rest of the face remains still, producing unrealistic outputs. 
                     </li>
                 </ul>
-                In the last column, we present results from <b style="color: #76b900;">implicit warping</b>, which
-                solves both issues raised above. The cross-modal attention layer is able to select the
-                appropriate features and produce an output free of artifacts.
+                In the last column, we present results from <b style="color: #76b900;">SPACEx</b>, which
+                solves all the issues raised above. It handles a large variety of input poses, produces realistic lip motion, and high-quality outputs.
                 <br>
-                Additional results and visualizations are available <a style="color: #76b900;" href='video_viewer.html'
-                    target='_blank'>at this link</a>.
             </div>
         </div>
         </br>
@@ -418,7 +419,7 @@
                 <h5 class="text-center">What makes <b style="color: #76b900;">SPACEx</b> so controllable?</h5>
                 <b style="color: #76b900;">SPACEx</b> decomposes the task of speech to face animation into 3 stages, as
                 shown in the below image:<br>
-                1) Speech2Landmarks, 2) Landmarks2Latents, and 3) Video Synthesis. Predicting facial landmarks helps add
+                1) Speech2Landmarks (S2L), 2) Landmarks2Latents (L2L), and 3) Video Synthesis. Predicting facial landmarks helps add
                 modifications such as blinking. We can also apply any desired rotation, translation, and scaling to the
                 3D facial landmarks. Instead of learning to generate a high-quality output image from facial landmarks,
                 we use a state-of-the-art pretrained <a href="https://nvlabs.github.io/face-vid2vid/"
@@ -475,7 +476,13 @@
             <div class="col-md-12">
                 <hr style="max-width: 800px;">
                 <h5 class="text-center">Emotion control</h5>
-                We use labels and <a href="https://github.com/ethanjperez/film" target="_blank">FiLM</a>
+                We condition both the Speech2Landmark and Landmark2Latent models on the emotion of the video frames using 
+                <a href="https://github.com/ethanjperez/film" target="_blank">FiLM</a> layers. 
+                For the S2L network, we use FiLM to modulate the audio features and the initial landmark input.
+                For L2L, we apply FiLM on the audio, landmarks, and the initial latent keypoint input. 
+                We use one-hot emotion labels when provided by the dataset, and a predicted per-frame probability 
+                distribution over the emotions when the ground-truth emotions are unavailable. 
+                At inference, we can provide the desired combination of emotion labels and their intensities as input, as shown in the video below.
             </div>
         </div>
         <br><br>
@@ -509,25 +516,14 @@
             <div class="col-md-12">
                 <h2>Summary</h2>
                 <ul>
-                    <li>GANcraft is a powerful tool for converting semantic block worlds to photorealistic
-                        worlds
-                        without the need for ground truth data.</li>
-                    <li>Existing methods perform poorly on the task due to the lack of viewpoint consistency and
-                        photorealism.</li>
-                    <li>GANcraft performs well in this challenging world-to-world setting where the ground truth
-                        is
-                        unavailable and the distribution mismatch between a Minecraft world and internet photos
-                        is
-                        significant.</li>
-                    <li>We introduce a new training scheme which uses pseudo-ground truth. This improves the
-                        quality
-                        of the results significantly.</li>
-                    <li>We introduce a hybrid neural rendering pipeline which is able to represent large and
-                        complex
-                        scenes efficiently.</li>
-                    <li>We are able to control the appearance of the GANcraft results by using
-                        style-conditioning
-                        images.</li>
+                    <li><b style="color: #76b900;">SPACEx</b> is a powerful tool for animating a facial image using just speech input.</li>
+                    <li>Existing methods perform poorly when the input face has large head rotations. Some require tight face crops, or animate just the lips.
+                        <b style="color: #76b900;">SPACEx</b> animates the entire face and can even generate realistic head pose sequences.
+                    </li>
+                    <li><b style="color: #76b900;">SPACEx</b> offers unprecedented controllability of the outputs &#8212; head pose, emotion label and intensity,
+                    blinking, and eye gaze control.</li>
+                    <li>Unlike prior work, <b style="color: #76b900;">SPACEx</b> produces high-quality photorealistic and temporally stable outputs at \(512\times512\) resolution by using a pretrained face-vid2vid generator.</li>
+                    
                 </ul>
             </div>
         </div>
