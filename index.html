@@ -476,6 +476,7 @@
                 </td>
             </tr>
         </table>
+        <br>
 
         <div class="row">
             <div class="col-md-12">
@@ -486,13 +487,14 @@
                 <a href="https://github.com/ethanjperez/film" target="_blank">FiLM</a> layers.
                 For the S2L network, we use FiLM to modulate the audio features and the initial landmark input.
                 For L2L, we apply FiLM on the audio, landmarks, and the initial latent keypoint input.
-                We use one-hot emotion labels when provided by the dataset, and a predicted per-frame probability
+                For training, we use one-hot emotion labels when provided by the dataset, and a predicted per-frame
+                probability
                 distribution over the emotions when the ground-truth emotions are unavailable.
                 At inference, we can provide the desired combination of emotion labels and their intensities as input,
                 as shown in the video below.
             </div>
         </div>
-        <br><br>
+        <br>
 
         <table style="width: 70%; margin: auto;">
             <tr class="text-center">
@@ -515,6 +517,7 @@
             </tr>
         </table>
     </div>
+    <br>
 
     <!-- Summary. -->
     <hr style="max-width: 800px;">
